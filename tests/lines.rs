@@ -64,8 +64,6 @@ pub fn whitespace() {
 
     assert_eq!(props.len(), 1);
 
-    dbg!(&props);
-
     assert_eq!(props.get("name"), vec![Cow::from("value")]);
 }
 
@@ -78,10 +76,33 @@ pub fn backspace_continue() {
 
     assert_eq!(props.len(), 1);
 
-    dbg!(&props);
-
     assert_eq!(
         props.get("targetCities"),
         vec![Cow::from("Detroit,Chicago,Los Angeles")]
     );
+}
+
+#[test]
+pub fn escaping() {
+    let content = b"name=hello\\tworld\\r\\nhow are you?";
+
+    let props = Properties::load(content).unwrap();
+
+    assert_eq!(props.len(), 1);
+
+    assert_eq!(
+        props.get("name"),
+        vec![Cow::from("hello\tworld\r\nhow are you?")]
+    );
+}
+
+#[test]
+pub fn unicode() {
+    let content = b"name=hello\\u002c world";
+
+    let props = Properties::load(content).unwrap();
+
+    assert_eq!(props.len(), 1);
+
+    assert_eq!(props.get("name"), vec![Cow::from("hello, world")]);
 }
