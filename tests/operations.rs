@@ -79,3 +79,16 @@ fn get_all() {
 
     assert_eq!(props.get_all("hallo"), vec!["mutter", "vater", "welt",]);
 }
+
+#[test]
+fn merge() {
+    let mut props = Properties::default();
+    props.insert_str("hallo", "welt");
+
+    let mut other = Properties::default();
+    other.insert_str("hello", "world");
+
+    props.merge(other);
+
+    assert_eq!(props.len(), 2);
+}

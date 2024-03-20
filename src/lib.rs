@@ -98,6 +98,16 @@ impl<'bytes> Properties<'bytes> {
             }
         }
     }
+
+    /// Merge a different properties into this one
+    pub fn merge<'other>(&mut self, other: Properties<'other>)
+    where
+        'other: 'bytes,
+    {
+        for (k, v) in other.pairs {
+            self.pairs.push((k, v));
+        }
+    }
 }
 
 impl<'bytes> std::ops::Index<&str> for Properties<'bytes> {
