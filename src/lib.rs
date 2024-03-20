@@ -79,4 +79,36 @@ impl<'bytes> Properties<'bytes> {
 
         res
     }
+
+    /// Insert owned strings into these properties
+    pub fn insert(&mut self, key: String, value: String) {
+        self.pairs.push((Cow::Owned(key), Cow::Owned(value)));
+    }
+
+    /// Insert borrowed strings into these properties
+    pub fn insert_str(&mut self, key: &'bytes str, value: &'bytes str) {
+        self.pairs.push((Cow::Borrowed(key), Cow::Borrowed(value)));
+    }
+
+    /// Deletes all the properties that match the keys
+    pub fn delete(&mut self, key: &str) {
+        for i in (0..self.pairs.len()).rev() {
+            if self.pairs[i].0 == key {
+                self.pairs.remove(i);
+            }
+        }
+    }
+}
+
+impl<'bytes> std::ops::Index<&str> for Properties<'bytes> {
+    type Output = str;
+
+    fn index(&self, index: &str) -> &Self::Output {
+        for (k, v) in &self.pairs {
+            if k == index {
+                return v.borrow();
+            }
+        }
+        panic!("properties does not have {index}")
+    }
 }
