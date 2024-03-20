@@ -8,6 +8,7 @@
 use std::borrow::{Borrow, Cow};
 
 mod dump;
+pub mod iter;
 mod load;
 
 /// A type representing a properties parse error
@@ -108,6 +109,16 @@ impl<'bytes> Properties<'bytes> {
         for (k, v) in other.pairs {
             self.pairs.push((k, v));
         }
+    }
+
+    /// Iterate over key value strings
+    pub fn key_values<'a>(&'a self) -> iter::KVIter<'a, 'bytes> {
+        iter::KVIter(self, 0)
+    }
+
+    /// Iterate over key value strings
+    pub fn keys<'a>(&'a self) -> iter::KIter<'a, 'bytes> {
+        iter::KIter(self, 0)
     }
 }
 
