@@ -7,6 +7,7 @@
 
 use std::borrow::{Borrow, Cow};
 
+mod dump;
 mod load;
 
 /// A type representing a properties parse error
@@ -119,6 +120,7 @@ impl<'bytes> std::ops::Index<&str> for Properties<'bytes> {
                 return v.borrow();
             }
         }
+
         panic!("properties does not have {index}")
     }
 }
