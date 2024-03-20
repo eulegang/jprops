@@ -114,3 +114,27 @@ impl<'a, 'bytes> IntoIterator for &'a mut Properties<'bytes> {
         IterMut(self.pairs.iter_mut())
     }
 }
+
+impl<'bytes> FromIterator<(String, String)> for Properties<'bytes> {
+    fn from_iter<T: IntoIterator<Item = (String, String)>>(iter: T) -> Self {
+        let mut props = Properties::default();
+
+        for (k, v) in iter {
+            props.insert(k, v);
+        }
+
+        props
+    }
+}
+
+impl<'bytes> FromIterator<(&'bytes str, &'bytes str)> for Properties<'bytes> {
+    fn from_iter<T: IntoIterator<Item = (&'bytes str, &'bytes str)>>(iter: T) -> Self {
+        let mut props = Properties::default();
+
+        for (k, v) in iter {
+            props.insert_str(k, v);
+        }
+
+        props
+    }
+}

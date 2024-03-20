@@ -83,3 +83,20 @@ fn keys() {
     assert_eq!(it.next(), Some("hello"));
     assert_eq!(it.next(), None);
 }
+
+#[test]
+fn from_ref() {
+    let props = Properties::from_iter(vec![("hello", "world"), ("hallo", "welt")]);
+
+    assert_eq!(props.len(), 2);
+}
+
+#[test]
+fn from_own() {
+    let props = Properties::from_iter(vec![
+        ("hello".to_string(), "world".to_string()),
+        ("hallo".to_string(), "welt".to_string()),
+    ]);
+
+    assert_eq!(props.len(), 2);
+}
