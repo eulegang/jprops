@@ -29,7 +29,7 @@ pub enum Error {
 /// The abstract notion of a properties file
 ///
 /// This uses a naive implementation but should be performant enough for most cases
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Properties<'bytes> {
     pairs: Vec<(Cow<'bytes, str>, Cow<'bytes, str>)>,
 }
@@ -50,8 +50,22 @@ impl<'bytes> Properties<'bytes> {
         self.pairs.is_empty()
     }
 
+    /// Get the value for the first first key encountered that matches the key
+    pub fn get<'container>(&'container self, key: &str) -> Option<&'bytes str>
+    where
+        'container: 'bytes,
+    {
+        for (k, v) in &self.pairs {
+            if k == key {
+                return Some(v.borrow());
+            }
+        }
+
+        None
+    }
+
     /// Get all values for a specific key
-    pub fn get<'container>(&'container self, key: &str) -> Vec<&'bytes str>
+    pub fn get_all<'container>(&'container self, key: &str) -> Vec<&'bytes str>
     where
         'container: 'bytes,
     {

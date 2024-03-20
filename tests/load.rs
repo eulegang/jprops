@@ -1,5 +1,4 @@
 use jprops::Properties;
-use std::borrow::Cow;
 
 #[test]
 pub fn basic_eq_assignment() {
@@ -9,7 +8,7 @@ pub fn basic_eq_assignment() {
 
     assert_eq!(props.len(), 1);
 
-    assert_eq!(props.get("name"), vec![Cow::from("value")]);
+    assert_eq!(props.get("name"), Some("value"));
 }
 
 #[test]
@@ -20,7 +19,7 @@ pub fn basic_colon_assignment() {
 
     assert_eq!(props.len(), 1);
 
-    assert_eq!(props.get("name"), vec![Cow::from("value")]);
+    assert_eq!(props.get("name"), Some("value"));
 }
 
 #[test]
@@ -31,7 +30,7 @@ pub fn blank_lines() {
 
     assert_eq!(props.len(), 1);
 
-    assert_eq!(props.get("name"), vec![Cow::from("value")]);
+    assert_eq!(props.get("name"), Some("value"));
 }
 
 #[test]
@@ -42,7 +41,7 @@ pub fn comments() {
 
     assert_eq!(props.len(), 1);
 
-    assert_eq!(props.get("name"), vec![Cow::from("value")]);
+    assert_eq!(props.get("name"), Some("value"));
 }
 
 #[test]
@@ -53,7 +52,7 @@ pub fn bang_comments() {
 
     assert_eq!(props.len(), 1);
 
-    assert_eq!(props.get("name"), vec![Cow::from("value")]);
+    assert_eq!(props.get("name"), Some("value"));
 }
 
 #[test]
@@ -64,7 +63,7 @@ pub fn whitespace() {
 
     assert_eq!(props.len(), 1);
 
-    assert_eq!(props.get("name"), vec![Cow::from("value")]);
+    assert_eq!(props.get("name"), Some("value"));
 }
 
 #[test]
@@ -78,7 +77,7 @@ pub fn backspace_continue() {
 
     assert_eq!(
         props.get("targetCities"),
-        vec![Cow::from("Detroit,Chicago,Los Angeles")]
+        Some("Detroit,Chicago,Los Angeles")
     );
 }
 
@@ -90,10 +89,7 @@ pub fn escaping() {
 
     assert_eq!(props.len(), 1);
 
-    assert_eq!(
-        props.get("name"),
-        vec![Cow::from("hello\tworld\r\nhow are you?")]
-    );
+    assert_eq!(props.get("name"), Some("hello\tworld\r\nhow are you?"));
 }
 
 #[test]
@@ -104,5 +100,5 @@ pub fn unicode() {
 
     assert_eq!(props.len(), 1);
 
-    assert_eq!(props.get("name"), vec![Cow::from("hello, world")]);
+    assert_eq!(props.get("name"), Some("hello, world"));
 }
